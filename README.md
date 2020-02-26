@@ -8,9 +8,13 @@ CSUN CIT Senior Design Project (Spring 2020)
 
 ## Project Goals
 1. Create VPC (/16) 
+
   1.1 2 Public Subnets (/21) and 2 Private Subnets (/20)
+  
   1.2 4 Availability Zones
+  
   1.3 NAT Gateway (Private Subnets)
+  
   1.4 Internet Gateway (Public Subnets)
 
 2.

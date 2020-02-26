@@ -80,8 +80,8 @@ terraform --version
 
 
 
-##**Team Members**
-Misak
+**Team Members**
+Misak <br>
 Petra
 Abdul
 Andrew

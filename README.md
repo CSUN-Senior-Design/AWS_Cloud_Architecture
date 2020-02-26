@@ -80,10 +80,10 @@ terraform --version
 
 
 
-**Team Members**
+**Team Members** <br>
 Misak <br>
-Petra
-Abdul
-Andrew
-Eric
-Nury
+Petra <br>
+Abdul <br>
+Andrew <br>
+Eric <br>
+Nury <br>

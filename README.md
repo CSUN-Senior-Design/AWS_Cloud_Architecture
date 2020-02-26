@@ -1,4 +1,4 @@
-# AWS_Cloud_Architecture
+# AWS Cloud Architecture
 CSUN CIT Senior Design Project (Spring 2020)
 
 ## Project Requirements
@@ -82,8 +82,13 @@ terraform --version
 
 ## Team Members
 Misak
+
 Petra
+
 Abdul
+
 Andrew
+
 Eric
+
 Nury

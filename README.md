@@ -9,8 +9,19 @@ CSUN CIT Senior Design Project (Spring 2020)
 ## Project Goals
 1. Create VPC (/16) 
     1. 2 Public Subnets (/21) and 2 Private Subnets (/20)
-    2. 4 Availability Zones
-    3. NAT Gateway (Private Subnets)
+    2. 4 Availability Zones (For 4 different EC2 Instances)
+    3. NAT Instance/Gateway (Private Subnets)
     4. Internet Gateway (Public Subnets)
 
-2.
+2. S3 Bucket
+    1. Remote (Terraform) State
+
+3. RDS Instance
+    1. MySQL
+
+4. Lambda & Cloudwatch
+    1. Trigger based on event (Time Based [Mo-Fri])
+    2. Call and Invoke Lamda Function to start or stop EC2 Instances
+    3. Apply same concepts for other services such as RDS
+    
+5. 

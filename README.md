@@ -80,4 +80,10 @@ terraform --version
 
 
 
-
+## Team Members
+Misak
+Petra
+Abdul
+Andrew
+Eric
+Nury

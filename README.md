@@ -55,4 +55,29 @@ aws configure
 #Enter output format: json
 ```
 
+### Install Terraform (on Mac)
+```
+Get Homebrew
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+brew install terraform
+```
+
+### Confirm Installations
+```
+Make a sample .tf file in a directory
+
+Run terraform init (Initializes working directory)
+-(Will also download & connect through aws as provider)
+
+aws --version
+terraform --version
+```
+
+
+
+
+
+
+
 

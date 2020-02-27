@@ -48,12 +48,12 @@ resource "aws_iam_role" "lambda_exec_role" {
 resource "aws_iam_role_policy_attachment" "test-attach" {
   #name = "test-attach"
   role = "lambda_role"
-  policy_arn = "arn:aws:iam::620636132257:policy/test_policy"
+  policy_arn = "arn:aws:iam::[-->insert your account ID<--]:policy/test_policy"
 }
 
 resource "aws_lambda_function" "start_instance" {
   #role = "aws_iam_role.lambda_exec_role.arn"
-  role = "arn:aws:iam::620636132257:role/lambda_role"
+  role = "arn:aws:iam::[-->insert your account ID<--]:role/lambda_role"
   handler = "start_instance.lambda_handler"
   runtime = "python3.6"
   filename = "start_instance.py.zip"
@@ -62,7 +62,7 @@ resource "aws_lambda_function" "start_instance" {
 
 resource "aws_lambda_function" "stop_instance" {
   #role = "aws_iam_role.lambda_exec_role.arn"
-  role = "arn:aws:iam::620636132257:role/lambda_role"
+  role = "arn:aws:iam::[-->insert your account ID<--]:role/lambda_role"
   handler = "stop_instance.lambda_handler"
   runtime = "python3.6"
   filename = "stop_instance.py.zip"
@@ -82,25 +82,25 @@ resource "aws_cloudwatch_event_rule" "cron_stop" {
 resource "aws_cloudwatch_event_target" "run_start_lambda" {
   rule = "cron_start"
   target_id = "aws_lambda_function.start_instance.id"
-  arn = "arn:aws:lambda:us-east-1:620636132257:function:myStart"
+  arn = "arn:aws:lambda:us-east-1:[-->insert your account ID<--]:function:myStart"
 }
 
 resource "aws_cloudwatch_event_target" "run_stop_lambda" {
   rule = "cron_stop"
   target_id = "aws_lambda_function.stop_instance.id"
-  arn = "arn:aws:lambda:us-east-1:620636132257:function:myStop"
+  arn = "arn:aws:lambda:us-east-1:[-->insert your account ID<--]:function:myStop"
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch" {
   action = "lambda:InvokeFunction"
   function_name = "myStart"
-  source_arn    = "arn:aws:events:us-east-1:620636132257:rule/cron_start"
+  source_arn    = "arn:aws:events:us-east-1:[-->insert your account ID<--]:rule/cron_start"
   principal = "events.amazonaws.com"
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch_2" {
   action = "lambda:InvokeFunction"
   function_name = "myStop"
-  source_arn    = "arn:aws:events:us-east-1:620636132257:rule/cron_stop"
+  source_arn    = "arn:aws:events:us-east-1:[-->insert your account ID<--]:rule/cron_stop"
   principal = "events.amazonaws.com"
 }

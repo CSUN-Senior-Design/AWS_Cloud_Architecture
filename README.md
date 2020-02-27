@@ -6,6 +6,9 @@ CSUN CIT Senior Design Project (Spring 2020)
 2. Make sure all services are connected to one another, have proper security permissions, and are working properly.
 3. Confirm that all instances/services are in the correct subnets and have the appropriate ingress/egress rules.
 
+## Importance of Project
+Using a cloud provider such as AWS, we are using their resources as Infrastructure as a Service (IaaS) and to be even more precise, an Infrastructure as Code (IaC). The main benefit of this automated configuration is that it is quick to build or make changes, as well as dispose when not needed anymore. Another beneficial feature is its ability to be dynamic: scale up or down,  and repeat processes when needed.
+
 ## Project Goals
 1. Create VPC (/16) 
     1. 2 Public Subnets (/21) and 2 Private Subnets (/20)
@@ -81,9 +84,9 @@ terraform --version
 
 
 **Team Members** <br>
-Misak <br>
-Petra <br>
-Abdul <br>
-Andrew <br>
-Eric <br>
-Nury <br>
+Abdul Rizwan <br>
+Andrew Huebert <br>
+Eric Meija <br>
+Misak Tivriktsyan <br>
+Nury Karanurov <br>
+Petra Antyanti Larisa Anggraeni <br>

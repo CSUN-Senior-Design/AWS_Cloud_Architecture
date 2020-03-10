@@ -15,9 +15,9 @@
 
 ## Security Groups
 1. Only Allows SSH on CSUNs Network
-    1. 130.166.0.0/16
+    1. 130.166.0.0/16 --> Bastion Instance
 
-2. Allows SSH from Bastion to Instances in Private Subnets
+2. Allows SSH from Bastion, to Instances in Private Subnets
     1. 192.168.40.0/21 (Only) --> 192.168.0.0/20, 192.168.16.0/20
 
 ## IGW For Public Subnets  

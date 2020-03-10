@@ -10,8 +10,8 @@
     1. us-west-2b
 3. Private - 192.168.0.0/20
     1. us-west-2c
-4. Private - 192.168.0.0/20
-    1. us-west-2d
+4. Private - 192.168.16.0/20
+    1. us-west-2d (Cant put instances in this AZ -- Will most likely change AZ)
 
 ## Security Groups
 1. Only Allows SSH on CSUNs Network

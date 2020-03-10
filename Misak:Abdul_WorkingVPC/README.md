@@ -13,9 +13,12 @@
 4. Private - 192.168.0.0/20
     1. us-west-2d
 
-## Security Group
+## Security Groups
 1. Only Allows SSH on CSUNs Network
     1. 130.166.0.0/16
+
+2. Allows SSH from Bastion to Instances in Private Subnets
+    1. 192.168.40.0/21 (Only) --> 192.168.0.0/20, 192.168.16.0/20
 
 ## IGW For Public Subnets  
 ## NAT Gateway for Private Subnets

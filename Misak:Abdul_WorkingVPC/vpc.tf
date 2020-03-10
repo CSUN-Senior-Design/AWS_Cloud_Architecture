@@ -1,8 +1,3 @@
-#Provider
-provider "aws" {
-  region = "us-west-2"
-}
-
 #VPC
 resource "aws_vpc" "VPC_SenrDesign" {
   cidr_block       = "192.168.0.0/16"
@@ -69,13 +64,13 @@ resource "aws_subnet" "Private_Subnet_2" {
 
 #Security Group 
 #SSH from CSUN Network Only
-resource "aws_security_group" "SG_SenrDesign" {
-  name        = "SG_SenrDesign"
+resource "aws_security_group" "SG_Public" {
+  name        = "SG_SenrDesign_Public"
   description = "Allow TCP inbound traffic"
   vpc_id      = "${aws_vpc.VPC_SenrDesign.id}"
 
   ingress {
-    description = "ssh inbound"
+    description = "SSH Inbound"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -90,7 +85,33 @@ resource "aws_security_group" "SG_SenrDesign" {
     
   }
   tags = {
-    Name = "SSH On CSUN Network Only"
+    Name = "SSH Into Bastion On CSUN Network Only"
+  }
+}
+
+#SSH Only From Private IPs
+resource "aws_security_group" "SG_Private" {
+  name        = "SG_SenrDesign_Private"
+  description = "Allow TCP inbound traffic"
+  vpc_id      = "${aws_vpc.VPC_SenrDesign.id}"
+
+  ingress {
+    description = "SSH Inbound"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["192.168.40.0/21"]
+  }
+
+  egress {
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    cidr_blocks     = ["0.0.0.0/0"]
+    
+  }
+  tags = {
+    Name = "SSH Allowed only internally (Private IPs)"
   }
 }
 

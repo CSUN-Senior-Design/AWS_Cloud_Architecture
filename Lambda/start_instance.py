@@ -11,7 +11,7 @@ def lambda_handler(event, context):
         instance_list.append(instance.instance_id)
 
     response = client.start_instances(
-        InstanceIds=[instance_list[]]
+        InstanceIds=instance_list
     )
     print(response)
 

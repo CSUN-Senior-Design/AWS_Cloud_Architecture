@@ -14,7 +14,7 @@ resource "aws_vpc" "VPC_SenrDesign" {
 #Public Subnet 1
 resource "aws_subnet" "Public_Subnet_1" {
   vpc_id = "${aws_vpc.VPC_SenrDesign.id}"
-  availability_zone = "us-west-2a"
+  availability_zone = "us-east-1a"
   map_public_ip_on_launch = "true"
   cidr_block = "192.168.40.0/21"
   
@@ -27,7 +27,7 @@ resource "aws_subnet" "Public_Subnet_1" {
 #Public Subnet 2
 resource "aws_subnet" "Public_Subnet_2" {
   vpc_id = "${aws_vpc.VPC_SenrDesign.id}"
-  availability_zone = "us-west-2b"
+  availability_zone = "us-east-1b"
   map_public_ip_on_launch = "true"
   cidr_block = "192.168.48.0/21"
   
@@ -40,7 +40,7 @@ resource "aws_subnet" "Public_Subnet_2" {
 #Private Subnet 1
 resource "aws_subnet" "Private_Subnet_1" {
   vpc_id = "${aws_vpc.VPC_SenrDesign.id}"
-  availability_zone = "us-west-2c"
+  availability_zone = "us-east-1c"
   cidr_block = "192.168.0.0/20"
 
   tags = {
@@ -51,7 +51,7 @@ resource "aws_subnet" "Private_Subnet_1" {
 #Private Subnet 2
 resource "aws_subnet" "Private_Subnet_2" {
   vpc_id = "${aws_vpc.VPC_SenrDesign.id}"
-  availability_zone = "us-west-2d"
+  availability_zone = "us-east-1d"
   cidr_block = "192.168.16.0/20"
 
   tags = {
@@ -102,7 +102,14 @@ resource "aws_security_group" "SG_Private" {
     protocol    = "tcp"
     cidr_blocks = ["192.168.40.0/21"]
   }
-
+  
+  ingress {
+    description = "SSH Inbound from Private IPs"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["192.168.0.0/20"]
+  }
   egress {
     from_port       = 0
     to_port         = 0

@@ -1,6 +1,6 @@
 #Launch Amazon Linux AMI 2018.03.0 ec2 instance - t2 micro
 ## Instance in AZ us-east-1c
-resource "aws_instance" "EC2_Subnet1" {
+resource "aws_instance" "EC2_Private_Subnet1_" {
 	count = "2"
 	ami = "ami-0e2ff28bfb72a4e45"
 	instance_type = "t2.micro"
@@ -20,7 +20,7 @@ resource "aws_instance" "EC2_Subnet1" {
 }
 
 ## Instance in AZ us-east-1c
-resource "aws_instance" "EC2_Subnet1" {
+resource "aws_instance" "EC2_Public_Subnet2" {
         count = "1"
         ami = "ami-0e2ff28bfb72a4e45"
         instance_type = "t2.micro"
@@ -57,7 +57,7 @@ resource "aws_instance" "bastion" {
 ## Put instance in AZ us-east-1d ##
 ## 
 
-resource "aws_instance" "EC2_Subnet2" {
+resource "aws_instance" "EC2_Private_Subnet2" {
         count = "1"
         ami = "ami-0e2ff28bfb72a4e45"
         instance_type = "t2.micro"

@@ -1,42 +1,17 @@
-#Load balancer security Group allows HTTP
-resource "aws_security_group" "allow_http" {
-  name        = "allow_http"
-  description = "Allow TLS inbound traffic"
-  ingress {
 
-    description = "HTTP Entry"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "allow_http"
-  }
-}
-
-
+#ELB Name, and the availability_zones
 resource "aws_lb" "alb" {
   name               = "test-lb-tf"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = ["${aws_security_group.SG_Private.id}"] #double check with web sg
+  #this can be changed basically the SG we use for our base server
+  security_groups    = ["${aws_security_group.web.id}"] #double check with web sg
   #availability_zones = ["us-east-1a", "us-east-1b"]
   subnets = [ "${aws_subnet.Public_Subnet_1.id}", "${aws_subnet.Public_Subnet_2.id}" ]
 
   enable_deletion_protection = false
-
-  
 }
+
 
 resource "aws_lb_target_group" "targetGroup" {
   name = "targetGroup"
@@ -47,23 +22,23 @@ resource "aws_lb_target_group" "targetGroup" {
 
 
 }
-#TBD
-resource "aws_lb_target_group_attachment" "test" {
-  target_group_arn = "${aws_lb_target_group.targetGroup.arn}"
-  target_id        = "${aws_instance.EC2_Public_Subnet2.id}"
-  port             = 80
+
+
+
+resource "aws_lb_listener" "alb" {
+  load_balancer_arn = "${aws_lb.alb.arn}"
+  port              = "80"
+  protocol          = "HTTP"
+
+  default_action {
+    type = "forward"
+    target_group_arn = "${aws_lb_target_group.targetGroup.arn}"
+  }
 }
 
-resource "aws_autoscaling_attachment" "asg_attachment_bar" {
-  autoscaling_group_name = "${aws_autoscaling_group.asg.id}"
-  alb_target_group_arn   = "${aws_lb_target_group.targetGroup.arn}"
-}
-
-
-#creating base image that we want to replicate
 resource "aws_ami_from_instance" "web_server_ami" {
   name               = "web_server_ami"
-  source_instance_id = "${aws_instance.EC2_Public_Subnet2.id}"
+  source_instance_id = "${aws_instance.webserver.id}"
 }
 
 resource "aws_launch_configuration" "launchConfig" {
@@ -71,7 +46,7 @@ resource "aws_launch_configuration" "launchConfig" {
   instance_type = "t2.micro"
   name = "launchConfig"
   enable_monitoring = "true"
-  security_groups = ["${aws_security_group.SG_Private.id}"]
+  security_groups = ["${aws_security_group.web.id}"]
   key_name = "tf_test"
 
 }
@@ -79,12 +54,12 @@ resource "aws_launch_configuration" "launchConfig" {
 resource "aws_autoscaling_group" "asg" {
   name = "asg"
   launch_configuration = "${aws_launch_configuration.launchConfig.id}"
-  vpc_zone_identifier       = [ "${aws_subnet.Private_Subnet_1.id}", "${aws_subnet.Private_Subnet_2.id}" ]
-  availability_zones = ["us-east-1c", "us-east-1d"]
+  vpc_zone_identifier       = [ "${aws_subnet.Public_Subnet_1.id}", "${aws_subnet.Public_Subnet_2.id}" ]
+  availability_zones = ["us-east-1a", "us-east-1b"]
   max_size           = 6
   min_size           = 2
   target_group_arns = ["${aws_lb_target_group.targetGroup.arn}"]
-  health_check_type = "EC2"
+  health_check_type = "ELB"
   health_check_grace_period = 300
 
 
@@ -103,4 +78,30 @@ resource "aws_autoscaling_policy" "scalingPolicy" {
   target_value = 60.0
 }
 
+}
+
+
+#Security Group allows HTTP
+resource "aws_security_group" "allow_http" {
+  name        = "allow_http"
+  description = "Allow TLS inbound traffic"
+  ingress {
+
+    description = "HTTP Entry"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "allow_http"
+  }
 }

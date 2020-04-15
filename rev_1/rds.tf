@@ -10,7 +10,7 @@ resource "aws_security_group" "mydb" {
     from_port = 3306
     to_port = 3306
     protocol = "tcp"
-    security_groups = ["${aws_security_group.SG_Private.id}"]
+   security_groups = ["${aws_security_group.web.id}"]
   }
 }
 

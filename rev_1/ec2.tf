@@ -52,6 +52,11 @@ resource "aws_instance" "EC2_Public_Subnet2" {
 					sudo systemctl enable httpd
 					EOF
 
+
+					tags = {
+						Name = "EC2_Sub1_${count.index + 1}"
+					}
+					
 }
 
 

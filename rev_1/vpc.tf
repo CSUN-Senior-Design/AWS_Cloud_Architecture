@@ -55,7 +55,7 @@ resource "aws_subnet" "Private_Subnet_2" {
   cidr_block = "192.168.16.0/20"
 
   tags = {
-    Name = "Private_Subnet_2"
+    Name = "Private_Subnet_1"
   }
 }
 ####################
@@ -134,7 +134,7 @@ resource "aws_security_group" "SG_Private" {
     protocol    = "tcp"
     cidr_blocks = ["192.168.0.0/20", "192.168.16.0/20"]
   }
-  
+
   ingress {
     description = "Allow http traffic inbound"
     from_port   = 80
@@ -145,6 +145,22 @@ resource "aws_security_group" "SG_Private" {
 
   ingress {
     description = "Allow https traffic inbound"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    description = "Allow http traffic outbound"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    description = "Allow https traffic outbound"
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"

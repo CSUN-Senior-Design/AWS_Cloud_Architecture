@@ -1,7 +1,7 @@
-edited as of April 8 2020
+edited as of April 14 2020
 
 files that were modified:
-1) ec2.tf --> just some minor additions
+1) ec2.tf --> just some minor additions + userdata
 2) elb.tf --> added asg and modified the elb to be alb
 3) rds.tf --> just some minor fix
 4) vpc.tf --> just some minor additions

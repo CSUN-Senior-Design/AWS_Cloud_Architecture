@@ -17,11 +17,11 @@ resource "aws_subnet" "Public_Subnet_1" {
   availability_zone = "us-east-1a"
   map_public_ip_on_launch = "true"
   cidr_block = "192.168.40.0/21"
-  
+
   tags = {
     Name = "Public_Subnet_1"
   }
-  
+
 }
 
 #Public Subnet 2
@@ -30,11 +30,11 @@ resource "aws_subnet" "Public_Subnet_2" {
   availability_zone = "us-east-1b"
   map_public_ip_on_launch = "true"
   cidr_block = "192.168.48.0/21"
-  
+
   tags = {
     Name = "Public_Subnet_2"
   }
-  
+
 }
 
 #Private Subnet 1
@@ -55,14 +55,14 @@ resource "aws_subnet" "Private_Subnet_2" {
   cidr_block = "192.168.16.0/20"
 
   tags = {
-    Name = "Private_Subnet_1"
+    Name = "Private_Subnet_2"
   }
 }
 ####################
 ## END OF SUBNETS ##
 ####################
 
-#Security Group 
+#Security Group
 #SSH into Bastion from CSUN Network Only
 resource "aws_security_group" "SG_Public" {
   name        = "SG_SenrDesign_Public"
@@ -77,12 +77,35 @@ resource "aws_security_group" "SG_Public" {
     cidr_blocks = ["130.166.0.0/16"]
   }
 
+  ingress {
+    description = "Allow MySQL traffic inbound"
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = ["130.166.0.0/16"]
+  }
+
+  ingress {
+    description = "Allow http traffic inbound"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow https traffic inbound"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   egress {
     from_port       = 0
     to_port         = 0
     protocol        = "-1"
     cidr_blocks     = ["0.0.0.0/0"]
-    
   }
   tags = {
     Name = "SSH Into Bastion On CSUN Network Only"
@@ -96,43 +119,43 @@ resource "aws_security_group" "SG_Private" {
   vpc_id      = "${aws_vpc.VPC_SenrDesign.id}"
 
   ingress {
-    description = "SSH into Private IPs from Public Subnet 1"
+    description = "SSH into Private IPs from Public Subnets"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["192.168.40.0/21"]
+    cidr_blocks = ["192.168.40.0/21", "192.168.48.0/21"]
   }
 
   ingress {
-    description = "SSH into Private IPs from Public Subnet 2"
+    description = "SSH into Private IPs from Privates Itself"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["192.168.48.0/21"]
-  }
-  
-  ingress {
-    description = "SSH into Private IPs from Private Subnet 1"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["192.168.0.0/20"]
+    cidr_blocks = ["192.168.0.0/20", "192.168.16.0/20"]
   }
 
   ingress {
-    description = "SSH into Private IPs from Private Subnet 2"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["192.168.16.0/20"]
-  }
-
-  ingress {
-    description = "Allow MySQL traffic inbound"
+    description = "Allow MySQL Traffic Inbound"
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = ["192.168.0.0/20"]
+    cidr_blocks = ["192.168.0.0/20", "192.168.16.0/20"]
+  }
+
+  ingress {
+    description = "Allow http traffic inbound"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow https traffic inbound"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
@@ -140,10 +163,10 @@ resource "aws_security_group" "SG_Private" {
     to_port         = 0
     protocol        = "-1"
     cidr_blocks     = ["0.0.0.0/0"]
-    
+
   }
   tags = {
-    Name = "Allowing SSH all Around and Database rules"
+    Name = "Allowing SSH all Around, Database and WebServer Rules"
   }
 }
 
@@ -153,7 +176,7 @@ resource "aws_internet_gateway" "IGW" {
 
    tags = {
      Name = "IGW"
-  }	
+  }
 }
 
 #Create NAT Gateway

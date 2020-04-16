@@ -10,7 +10,7 @@ resource "aws_security_group" "mydb" {
     from_port = 3306
     to_port = 3306
     protocol = "tcp"
-   # security_groups = ["${aws_security_group.web.id}"]
+   security_groups = ["${aws_security_group.SG_Public.id}"]
   }
 }
 
@@ -27,7 +27,7 @@ resource "aws_db_subnet_group" "db-subnet" {
 #create RDS instance
 resource "aws_db_instance" "mydb1" {
   allocated_storage        = 20 # gigabytes
-  db_subnet_group_name     = "db-subnet"
+  db_subnet_group_name     = "${aws_db_subnet_group.db-subnet.name}"
   engine                   = "mysql"
   engine_version           = "5.7.22"
   identifier               = "lab-db"
